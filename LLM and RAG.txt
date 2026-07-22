@@ -1,0 +1,167 @@
+import gradio as gr
+import chromdb
+
+from llama_index.core import(
+    vectorStoreIndex,
+    SimpleDirectoryReader,
+    Storage Context,
+    Settings,
+)
+
+from llama_index.core.node_parser import SentenseSplitter
+from llama_index.vector_store.chroma import ChromadbVectorStore
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.llms.huggingface import HuggingFaceLLM
+
+Settings.embed_model=HuggingFaceEmbedding(
+  model_name="sentence-transformers/all-MiniLM-L6-V2"
+  )
+setting.llm=HuggingFaceLLM(
+    model_name="gpt2"
+    tokenizer_name="gpt2"
+    context_window=1024,
+    max_new_tokens=100,
+)
+
+setting.text_splitter = SentenceSplitter(
+    Chunk_size = 256,
+    Chunk_overlap = 20
+)
+
+docs = SimpleDirectoryReader(
+    input_files=[r"document/day 4.pdf"]
+    ).load_data()
+
+    Client=Chromadb.PersistentClient(path="./chroma_db")
+    Collection=Client.get_or_create_Collection("medical_docs")
+
+    vector_store = ChromaVectorStore(Chroma_collection=collection)
+        
+    
+    storage_context = StorageContext.from_defaults(
+        vector_store = vector_store
+    )
+  
+   index = VectorStorageIndex.from_documents(
+       docs,
+       Storage_context=storage_context
+   )
+
+   query_engine = index.as_query_engine()
+   def chatbot(question, history):
+    if question.strip() == "":
+      return "", history
+
+      response = query_engine.query(question)
+
+      history.append(
+          (question, str(response))
+      )
+
+      memory = ChatMemoryBuffer.from_defaults(token_limit=1000)
+
+      chat_engine = CondenseQuestionChatEngine.from_defaults(
+          query_engine=query_engine,
+          memory=memory,
+      )
+
+      questions = 0
+
+      def chat(message):
+        global questions
+        questions += 1
+
+        response = chat_engine.chat(message)
+
+        dashboard = f"""Questions Asked : {questions}
+        Retrieved Chunks : 1
+        Memory Enabled : Yes
+        RAG : Enabled
+        Embedding Model :
+        sentence-transformer/all-MiniLM-L6-V2
+
+        LLM MODEL:
+        GPT-2"""import gradio as gr
+import chromdb
+
+from llama_index.core import(
+    vectorStoreIndex,
+    SimpleDirectoryReader,
+    Storage Context,
+    Settings,
+)
+
+from llama_index.core.node_parser import SentenseSplitter
+from llama_index.vector_store.chroma import ChromadbVectorStore
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.llms.huggingface import HuggingFaceLLM
+
+Settings.embed_model=HuggingFaceEmbedding(
+  model_name="sentence-transformers/all-MiniLM-L6-V2"
+  )
+setting.llm=HuggingFaceLLM(
+    model_name="gpt2"
+    tokenizer_name="gpt2"
+    context_window=1024,
+    max_new_tokens=100,
+)
+
+setting.text_splitter = SentenceSplitter(
+    Chunk_size = 256,
+    Chunk_overlap = 20
+)
+
+docs = SimpleDirectoryReader(
+    input_files=[r"document/day 4.pdf"]
+    ).load_data()
+
+    Client=Chromadb.PersistentClient(path="./chroma_db")
+    Collection=Client.get_or_create_Collection("medical_docs")
+
+    vector_store = ChromaVectorStore(Chroma_collection=collection)
+        
+    
+    storage_context = StorageContext.from_defaults(
+        vector_store = vector_store
+    )
+  
+   index = VectorStorageIndex.from_documents(
+       docs,
+       Storage_context=storage_context
+   )
+
+   query_engine = index.as_query_engine()
+   def chatbot(question, history):
+    if question.strip() == "":
+      return "", history
+
+      response = query_engine.query(question)
+
+      history.append(
+          (question, str(response))
+      )
+
+      memory = ChatMemoryBuffer.from_defaults(token_limit=1000)
+
+      chat_engine = CondenseQuestionChatEngine.from_defaults(
+          query_engine=query_engine,
+          memory=memory,
+      )
+
+      questions = 0
+
+      def chat(message):
+        global questions
+        questions += 1
+
+        response = chat_engine.chat(message)
+
+        dashboard = f"""Questions Asked : {questions}
+        Retrieved Chunks : 1
+        Memory Enabled : Yes
+        RAG : Enabled
+        Embedding Model :
+        sentence-transformer/all-MiniLM-L6-V2
+
+        LLM MODEL:
+        GPT-2"""
